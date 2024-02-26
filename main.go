@@ -5,8 +5,7 @@ import (
 	"log"
 	"net"
 
-	helloworldpb "github.com/amanjain-cb/grpc-server/gen/go/proto/helloworld"
-
+	helloworldpb "github.com/OyePuru/grpc-proto/gen/go/client/proto/helloworld"
 	"google.golang.org/grpc"
 )
 
