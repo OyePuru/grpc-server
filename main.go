@@ -5,33 +5,30 @@ import (
 	"log"
 	"net"
 
-	// Importing the auto-generated gRPC client package from grpcproto
-	grpcprotopb "github.com/OyePuru/grpc-proto/gen/go/client/proto/grpcproto"
+	grpcprotopb "github.com/OyePuru/grpc-proto/gen/go/proto/grpcproto"
 	"google.golang.org/grpc"
 )
 
 type server struct {
 	// Embedding the generated interface services
-	grpcprotopb.UnimplementedGreeterServer
-	grpcprotopb.UnimplementedGreeter2Server
+	grpcprotopb.UnimplementedExampleGetServiceServer
+	grpcprotopb.UnimplementedExamplePostServiceServer
 }
 
-// Implementation of the SayHello method for the Greeter service
-func (s *server) SayHello(ctx context.Context, in *grpcprotopb.HelloRequest) (*grpcprotopb.HelloReply, error) {
-	// Concatenate the received name with " world" and return
-	return &grpcprotopb.HelloReply{Message: in.Name + " world"}, nil
+// Implementation of the ExampleGetHandler method for the ExampleGetService service
+func (s *server) ExampleGetHandler(ctx context.Context, in *grpcprotopb.ExampleGetRequest) (*grpcprotopb.ExampleGetResponse, error) {
+	return &grpcprotopb.ExampleGetResponse{Message: "Grpc Gateway is working."}, nil
 }
 
-// Implementation of the SayHello2 method for the Greeter2 service
-func (s *server) SayHello2(ctx context.Context, in *grpcprotopb.HelloRequest2) (*grpcprotopb.HelloReply2, error) {
-	// Return a predefined message
-	return &grpcprotopb.HelloReply2{Message: "GET HELLO WORLD"}, nil
+// Implementation of the ExamplePostHandler method for the ExamplePostService service
+func (s *server) ExamplePostHandler(ctx context.Context, in *grpcprotopb.ExamplePostRequest) (*grpcprotopb.ExamplePostResponse, error) {
+	return &grpcprotopb.ExamplePostResponse{Message: "Hello, " + in.Name}, nil
 }
 
-// Register the Greeter service with the server
+// Register the grpc services with the server
 func RegisterGrpcServicesWithServer(grpcServer grpc.ServiceRegistrar) {
-	grpcprotopb.RegisterGreeterServer(grpcServer, &server{})
-	grpcprotopb.RegisterGreeter2Server(grpcServer, &server{})
+	grpcprotopb.RegisterExampleGetServiceServer(grpcServer, &server{})
+	grpcprotopb.RegisterExamplePostServiceServer(grpcServer, &server{})
 }
 
 func main() {
